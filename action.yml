@@ -1,0 +1,13 @@
+name: 'Auto Release Notes'
+description: 'Greet someone and record the time'
+inputs:
+  feature_commit_pattern:
+    description: 'Feature commit pattern'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
