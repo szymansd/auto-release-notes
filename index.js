@@ -4,9 +4,10 @@ const github = require('@actions/github');
 const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
     const descriptionTemplate = core.getInput('description_template') ||
-        `#Features:
+        `# Features:
         {{feature_commits}}
-        #Chores:
+        
+        # Chores:
         {{chores_commits}}
         `;
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
