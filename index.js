@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require("child_process");
 
-try {
+const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
     const descriptionTemplate = core.getInput('description_template') || `
         **Features:**
@@ -47,11 +47,16 @@ try {
     const url = `/repos/${params.owner}/${params.repo}/pulls/${pullNumber}`;
 
     params.description = descriptionTemplate
-        .replace('{{feature_commits}}', features.reduce((prev, curr) => prev += `\n- ${curr}`), '')
-        .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`), '');
+        .replace('{{feature_commits}}', features.reduce((prev, curr) => prev += `\n- ${curr}`, ''))
+        .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
     params.title = titleTemplate.replace('{{date}}', `${date.getDate()} ${month}`);
 
     await octokit.request(`PATCH ${url}`, params);
-} catch (error) {
-    core.setFailed(error.message);
 }
+
+run().then(() => {
+        core.info('Pull request updated succesfully');
+    })
+    .catch((e) => {
+        core.setFailed(e.message);
+    });
