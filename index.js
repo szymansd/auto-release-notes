@@ -52,8 +52,9 @@ const run = async () => {
     params.description = descriptionTemplate
         .replace('{{feature_commits}}', features.reduce((prev, curr) => prev += `\n- ${curr}`, ''))
         .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
-    params.title = titleTemplate.replace('{{date}}', `${date.getDate()} ${month}`);
 
+    params.title = titleTemplate.replace('{{date}}', `${date.getDate()} ${month}`);
+    console.log(params)
     await octokit.request(`PATCH ${url}`, params);
 }
 
