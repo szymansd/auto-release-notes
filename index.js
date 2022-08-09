@@ -34,7 +34,7 @@ const run = async () => {
     })
     const features = [];
     const chores = [];
-    console.log(commits);
+    console.log(data);
 
     data.forEach(({ commit }) => {
         if(commit.message.match(featurePattern)) {
