@@ -29,14 +29,14 @@ const run = async () => {
 
     const featurePattern = core.getInput("feature_commit_pattern");
 
-    const commits = await octokit.request(`GET /repos/${params.owner}/${params.repo}/pulls/${params.pull_number}/commits`, {
+    const { data } = await octokit.request(`GET /repos/${params.owner}/${params.repo}/pulls/${params.pull_number}/commits`, {
         ...params,
     })
     const features = [];
     const chores = [];
     console.log(commits);
 
-    commits.forEach(({ commit }) => {
+    data.forEach(({ commit }) => {
         if(commit.message.match(featurePattern)) {
             features.push(commit.message);
         } else {
