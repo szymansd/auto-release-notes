@@ -6,8 +6,7 @@ const run = async () => {
     const descriptionTemplate = core.getInput('description_template') ||
         `# Features:
         {{feature_commits}}
-        
-        # Chores:
+        \n# Chores:
         {{chores_commits}}
         `;
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
