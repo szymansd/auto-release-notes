@@ -1,13 +1,19 @@
 name: 'Auto Release Notes'
-description: 'Greet someone and record the time'
+description: 'Updates PR content to enter'
 inputs:
+  github_token:
+    description: 'Github Token'
+    required: true
   feature_commit_pattern:
     description: 'Feature commit pattern'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: 'JIRA-'
+  description_template:
+    description: 'This is a description template use {{feature_commits}} to replace it by list of commits matched using feature_commit_pattern and {{chores_commits}} will be replace by commit description list not matched feature_commit_pattern.'
+    required: false
+  title_template:
+    description: 'This is a pattern for PR name. {{date}} will be replace by D MM'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
