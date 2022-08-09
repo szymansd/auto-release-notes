@@ -57,7 +57,7 @@ const run = async () => {
 }
 
 run().then(() => {
-        core.info('Pull request updated succesfully');
+        core.info('Pull request updated successfully');
     })
     .catch((e) => {
         core.setFailed(e.message);

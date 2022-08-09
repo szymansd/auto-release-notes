@@ -8849,14 +8849,6 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 2081:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
-
-/***/ }),
-
 /***/ 2361:
 /***/ ((module) => {
 
@@ -9012,7 +9004,6 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
-const { execSync } = __nccwpck_require__(2081);
 
 const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
@@ -9025,15 +9016,16 @@ const run = async () => {
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
 
     const octokit = github.getOctokit(githubToken);
-    const params = {
-        owner: github.context.repo.owner,
-        repo: github.context.repo.repo,
-    };
 
-    const targetBranch = process.env.GITHUB_BASE_REF;
     const baseBranch = process.env.GITHUB_REF;
 
     const [_, pull, pullNumber] = baseBranch.split('/');
+
+    const params = {
+        owner: github.context.repo.owner,
+        repo: github.context.repo.repo,
+        pull_number: pullNumber,
+    };
 
     if (pull !== 'pull') {
         throw new Error('This is not a Pull Request');
@@ -9041,15 +9033,17 @@ const run = async () => {
 
     const featurePattern = core.getInput("feature_commit_pattern");
 
-    const commitList = execSync(`git log --pretty=format:"%s" --no-merges --author-date-order ${targetBranch}...${baseBranch}`);
+    const commits = await octokit.request(`GET /repos/${params.owner}/${params.repo}/pulls/${params.pull_number}/commits`, {
+        ...params,
+    })
     const features = [];
     const chores = [];
 
-    commitList.forEach((item) => {
-        if(item.match(featurePattern)) {
-            features.push(item);
+    commits.forEach(({ commit }) => {
+        if(commit.message.match(featurePattern)) {
+            features.push(commit.message);
         } else {
-            chores.push(item);
+            chores.push(commit.message);
         }
     });
 
@@ -9067,7 +9061,7 @@ const run = async () => {
 }
 
 run().then(() => {
-        core.info('Pull request updated succesfully');
+        core.info('Pull request updated successfully');
     })
     .catch((e) => {
         core.setFailed(e.message);
