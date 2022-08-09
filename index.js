@@ -49,7 +49,7 @@ const run = async () => {
 
     const url = `/repos/${params.owner}/${params.repo}/pulls/${pullNumber}`;
 
-    params.description = descriptionTemplate
+    params.body = descriptionTemplate
         .replace('{{feature_commits}}', features.reduce((prev, curr) => prev += `\n- ${curr}`, ''))
         .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
 
