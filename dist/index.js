@@ -9035,7 +9035,7 @@ const run = async () => {
 
     const [_, pull, pullNumber] = baseBranch.split('/');
 
-    if (pull === 'pull') {
+    if (pull !== 'pull') {
         throw new Error('This is not a Pull Request');
     }
 
