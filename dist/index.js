@@ -9004,16 +9004,25 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
+const fs = (__nccwpck_require__(7147).promises);
 
 const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
-    const descriptionTemplate = core.getInput('description_template') ||
+    let descriptionTemplate = core.getInput('description_template') ||
         `# Features:
         {{feature_commits}}
         \n# Chores:
         {{chores_commits}}
         `;
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
+    const descriptionTemplateFilepath = core.getInput('description_template_filepath');
+
+    try {
+        const templateFileBuffer = await fs.readFile(descriptionTemplateFilepath);
+        descriptionTemplate = templateFileBuffer.toString();
+    } catch (e) {
+        core.warning('Template file not found will fallback to description_template value');
+    }
 
     const octokit = github.getOctokit(githubToken);
 
