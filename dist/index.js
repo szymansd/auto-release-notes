@@ -9038,7 +9038,6 @@ const run = async () => {
     })
     const features = [];
     const chores = [];
-    console.log(data);
 
     data.forEach(({ commit }) => {
         if(commit.message.match(featurePattern)) {
@@ -9058,7 +9057,7 @@ const run = async () => {
         .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
 
     params.title = titleTemplate.replace('{{date}}', `${date.getDate()} ${month}`);
-    console.log(params)
+
     await octokit.request(`PATCH ${url}`, params);
 }
 
