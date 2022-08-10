@@ -1,0 +1,22 @@
+name: 'Auto Release Notes'
+description: 'Updates PR content to enter'
+inputs:
+  github_token:
+    description: 'Github Token'
+    required: true
+  feature_commit_pattern:
+    description: 'Feature commit pattern'
+    required: true
+    default: 'JIRA-'
+  description_template:
+    description: 'This is a description template use {{feature_commits}} to replace it by list of commits matched using feature_commit_pattern and {{chores_commits}} will be replace by commit description list not matched feature_commit_pattern.'
+    required: false
+  description_template_filepath:
+    description: 'If you need to use more complex template you can use MD file. Use {{feature_commits}} in the template to replace it with list of commits matched using feature_commit_pattern and {{chores_commits}} will be replace by commit description list not matched feature_commit_pattern. This will overwrite description_template. If file not exist will fallback to description_template.'
+    required: false
+  title_template:
+    description: 'This is a pattern for PR name. {{date}} will be replace by D MM'
+    required: false
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
