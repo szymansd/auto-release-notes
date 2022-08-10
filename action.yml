@@ -1,5 +1,8 @@
 name: 'Auto Release Notes'
-description: 'Updates PR content to enter'
+description: 'Updates PR content with features & chores'
+branding:
+  icon: 'play-circle'
+  color: 'red'
 inputs:
   github_token:
     description: 'Github Token'

@@ -2,7 +2,7 @@
 Here you can add some custom message
 
 ## Features:
-{{feature_commits}}
+{{features}}
 
 ## Chores:
-{{chores_commits}}
+{{chores}}
