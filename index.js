@@ -17,6 +17,7 @@ const run = async () => {
         const templateFileBuffer = await fs.readFile(descriptionTemplateFilepath);
         descriptionTemplate = templateFileBuffer.toString();
     } catch (e) {
+        core.warning(e);
         core.warning('Template file not found will fallback to description_template value');
     }
 
