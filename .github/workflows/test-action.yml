@@ -14,7 +14,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Lint correct input
+      - name: Test action
         uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          description_template_filepath: './.github/templates/deployment.md'
