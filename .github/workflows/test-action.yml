@@ -1,0 +1,20 @@
+name: Test Action
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-correct:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint correct input
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
