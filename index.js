@@ -6,9 +6,9 @@ const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
     let descriptionTemplate = core.getInput('description_template') ||
         `# Features:
-        {{feature_commits}}
+        {{features}}
         \n# Chores:
-        {{chores_commits}}
+        {{chores}}
         `;
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
     const descriptionTemplateFilepath = core.getInput('description_template_filepath');
@@ -58,8 +58,8 @@ const run = async () => {
     const url = `/repos/${params.owner}/${params.repo}/pulls/${pullNumber}`;
 
     params.body = descriptionTemplate
-        .replace('{{feature_commits}}', features.reduce((prev, curr) => prev += `\n- ${curr}`, ''))
-        .replace('{{chores_commits}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
+        .replace('{{features}}', features.reduce((prev, curr) => prev += `\n- ${curr}`, ''))
+        .replace('{{chores}}', chores.reduce((prev, curr) => prev += `\n- ${curr}`, ''));
 
     params.title = titleTemplate.replace('{{date}}', `${date.getDate()} ${month}`);
 
