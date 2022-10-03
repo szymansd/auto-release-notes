@@ -38,6 +38,7 @@ const run = async () => {
 
     const featurePattern = core.getInput("feature_commit_pattern");
 
+    const regex = new RegExp(featurePattern+'\d*', 'gmi');
     const { data } = await octokit.request(`GET /repos/${params.owner}/${params.repo}/pulls/${params.pull_number}/commits`, {
         ...params,
     })
@@ -45,8 +46,11 @@ const run = async () => {
     const chores = [];
 
     data.forEach(({ commit }) => {
-        if(commit.message.match(featurePattern)) {
-            features.push(commit.message);
+        const commitId = commit.message.match(regex);
+        if (commitId) {
+            if (!features.find((featureMessage) => featureMessage.includes(commitId))) {
+                features.push(commit.message);
+            }
         } else {
             chores.push(commit.message);
         }
