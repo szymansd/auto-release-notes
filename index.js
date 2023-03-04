@@ -1,6 +1,11 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs').promises;
+const jira_connector = require('connectors/jira');
+
+const issuesMappers = {
+    jira: jira_connector
+}
 
 const run = async () => {
     const githubToken = core.getInput('github_token', { required: true });
@@ -12,6 +17,13 @@ const run = async () => {
         `;
     const titleTemplate = core.getInput('title_template') || `Deployment {{date}}`;
     const descriptionTemplateFilepath = core.getInput('description_template_filepath');
+    
+    // Issues management systems
+    const issuesManagementSystem = core.getInput('ticket_management');
+    let issueFinder = null;
+    if (issuesManagementSystem && issuesMappers[issuesManagementSystem]) {
+        issueFinder = issuesMappers[issuesManagementSystem].connect(core);
+    }
 
     try {
         const templateFileBuffer = await fs.readFile(descriptionTemplateFilepath);
@@ -49,7 +61,12 @@ const run = async () => {
         const commitId = commit.message.match(regex);
         if (commitId) {
             if (!features.find((featureMessage) => featureMessage.includes(commitId))) {
-                features.push(commit.message);
+                if (issueFinder) {
+                    let issueTitle = issueFinder.find(commitId);
+                    features.push(`${commitId}-${issueTitle}`);
+                } else {
+                    features.push(commit.message);
+                }
             }
         } else {
             chores.push(commit.message);
@@ -58,7 +75,6 @@ const run = async () => {
 
     const date = new Date();
     const month = date.toLocaleString('default', { month: 'long' });
-
     const url = `/repos/${params.owner}/${params.repo}/pulls/${pullNumber}`;
 
     params.body = descriptionTemplate
