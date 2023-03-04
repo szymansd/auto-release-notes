@@ -21,7 +21,11 @@ This workflow will be running only if it's run for pull request. Otherwise it wi
   ```
 - `description_template_filepath`: If you need to use more complex template you can use MD file. Use {{feature_commits}} in the template to replace it with list of commits matched using feature_commit_pattern and {{chores_commits}} will be replace by commit description list not matched feature_commit_pattern. This will overwrite description_template. If file not exist will fallback to description_template. Sample template file can be found [here](https://github.com/szymansd/auto-release-notes/blob/main/.github/templates/deployment.md).
 - `title_template`: This is a pattern for PR name. {{date}} will be replace by D MM. Default value: `Deployment {{date}}`
-
+- `ticket_management`: If you use ticket management you can pass it here and job will replace feature commits with JIRA issue titles. Possible values: jira
+- `jira_username`: If you are using JIRA as your ticket management system you can have add username and password so instead of commits release notes will have issue titles
+- `jira_password`: If you are using JIRA as your ticket management system you can have add username and password so instead of commits release notes will have issue titles
+- `jira_url`: If you are using JIRA as your ticket management system you can add JIRA url so job will connect and try to check all linked comits. Instead of commits messages it will display JIRA titles
+ 
 ### Example workflow
 
 ```yaml
