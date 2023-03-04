@@ -20,6 +20,18 @@ inputs:
   title_template:
     description: 'This is a pattern for PR name. {{date}} will be replace by D MM'
     required: false
+  ticket_management:
+    description: 'IF you use ticket management you can pass it here and job will replace feature commits with JIRA issue titles. Possible options: jira'
+    required: false
+  jira_username:
+    description: 'If you are using JIRA as your ticket management system you can have add username and password so instead of commits release notes will have issue titles'
+    required: false
+  jira_password:
+    description: 'If you are using JIRA as your ticket management system you can have add username and password so instead of commits release notes will have issue titles'
+    required: false
+  jira_url:
+    description: 'If you are using JIRA as your ticket management system you can add JIRA url so job will connect and try to check all linked comits. Instead of commits messages it will display JIRA titles'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
